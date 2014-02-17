@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="no">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>TesTcl: Rammeverk for enhetstesting av F5 Big Ip iRules</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="assets/revealjs/css/reveal.min.css">
+		<link rel="stylesheet" href="assets/revealjs/css/theme/default.css" id="theme">
+		<link rel="stylesheet" href="assets/revealjs/css/zenburn.css" id="theme">
+		<style type="text/css">
+			ul.checkmark li:before{
+    			content:"\2713\0020";
+			}
+			ul.checkmark li{
+				list-style-type:none;
+			}
+			column{
+				float: left;
+				text-align: left;
+				width: 50%;
+			}
+			emphasize{
+				color: #ff6600;
+			}
+		</style>
+	</head>
+
+	<body>
+	<div class="reveal">
+		<div class="slides">
+
+				<section data-background="assets/viprion.png">
+				</section>
+
+                <section>
+                    <h2>TesTcl: Rammeverk for enhetstesting av F5 Big Ip iRules</h2>
+                    <h5>Stefan Magnus Landrø, Bekk Consulting</h5>
+                    <h5>Software 2014, 26. februar 2014</h5>
+                </section>
+
+                <!-- Agenda -->
+				<section>
+					<h3>Agenda</h3>
+					<ul class="checkmark">
+						<li>F5 Big Ip LTM</li>
+                        <li>TesTcl</li>
+                        <li>Demo</li>
+                        <li>Oppsummering</li>
+					</ul>
+				</section>
+
+                <!-- Big Ip -->
+                <section>
+
+                    <section>
+                        <h2>F5 Big Ip Local Traffic Manager (LTM)</h2>
+                    </section>
+                    
+                    <section data-background="assets/viprion-ports.png">
+				    </section>
+
+                    <section>
+                        <h3>F5 Big Ip LTM</h3>
+                        <ul class="checkmark">
+                            <li>Hardware</li>
+                            <li>OS og Software</li>
+                            <li>Last balanserer</li>
+                            <li>Offloading (SSL, komprimering)</li>
+                            <li>Optimering</li>
+                            <li class="fragment">Konfigureres med <span style="color: red;">iRules</span></li>
+                            <li class="fragment"><span style="color: red;">iRules</span> er en <span style="color: red;">Tcl</span> dialekt</li>
+                        </ul>
+                    </section>
+                    
+                    <section>
+                    
+<pre><code language="tcl">
+  when HTTP_REQUEST {
+    if { [HTTP::uri] starts_with "/foo" } {
+      pool foo
+    } else {
+      pool bar
+    }
+  }
+
+  when HTTP_RESPONSE {
+    HTTP::header remove "Vary"
+    HTTP::header insert Vary "Accept-Encoding"
+  }
+
+</code></pre>
+                    
+                    </section>
+                    
+				</section> 
+
+				<!-- TesTcl -->
+				<section>
+				
+					<section>
+						<h2>TesTcl</h2>
+					</section>
+				
+					<section>
+						<h3>Utfordringer med iRules</h3>
+                        <ul class="checkmark">
+                            <li class="fragment">utilgjengelig miljø</li>
+                            <li class="fragment">copy/paste og mye black magic</li>
+							<li class="fragment">manuell testing</li>
+							<li class="fragment">lang feedback loop</li>
+                            <li class="fragment">gjentatte feil i produksjon</li>
+                        </ul>						
+					</section>
+					
+					<section>
+						<h3>TesTcl</h3>
+						<ul class="checkmark">
+							<li class="fragment">Tcl package (bibliotek)</li>						
+							<li class="fragment">Tcl mock rammeverk</li>
+							<li class="fragment">iRule API stubs</li>
+							<li class="fragment">iRule extensions implementert i JTcl</li>
+							<li class="fragment" style="color: red;">Lar deg enhetsteste iRules</li>
+						</ul>					
+					</section>
+				
+				
+				</section>
+
+        </div>
+    </div>
+
+	<script src="assets/revealjs/lib/js/head.min.js"></script>
+	<script src="assets/revealjs/js/reveal.min.js"></script>
+
+		<script>
+
+			Reveal.initialize({
+				transition: 'default',
+				history: true,
+				dependencies: [
+					{ src: 'assets/revealjs/lib/classList.js', condition: function() { return !document.body.classList; } },	
+					{ src: 'assets/revealjs/lib/js/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },					
+					{ src: 'assets/revealjs/lib/js/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+	</body>
+</html>
