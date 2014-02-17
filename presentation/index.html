@@ -79,6 +79,9 @@
                     <section>
                     
 <pre><code language="tcl">
+
+  # En enkel iRule
+
   when HTTP_REQUEST {
     if { [HTTP::uri] starts_with "/foo" } {
       pool foo
